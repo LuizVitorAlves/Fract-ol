@@ -29,6 +29,7 @@ typedef struct s_complex {
 typedef struct s_fractol {
     void    *mlx;
     void    *win;
+    t_complex    c;
 } t_fractol;
 
 //events
