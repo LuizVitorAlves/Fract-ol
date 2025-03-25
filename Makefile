@@ -15,7 +15,7 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror
 MLX = minilibx-linux
 MLXFLAGS = -lmlx -L$(MLX) -lXext -lX11 -lm
-SRCS = src/main.c src/fractal.c src/events.c src/render.c
+SRCS = main.c fractal.c events.c render.c
 OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)

@@ -10,31 +10,19 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mlx.h"
-#include <stdlib.h>
-
-int key_hook(int keycode, void *param) 
-{
-    (void)param;
-    if (keycode == 65307)
-        exit(0);
-    return (0);
-}
-
-int close_window(void *param)
-{
-    (void)param;
-    exit(0);
-}
+#include "minilibx-linux/mlx.h"
+#include "fractol.h"
 
 int	main()
 {
 	void	*mlx;
 	void	*win;
+    t_fractol   fractol;
 
 	mlx = mlx_init();
 	win = mlx_new_window(mlx, 800, 600, "Fract-ol");
-	mlx_key_hook(win, key_hook, NULL);
+    draw_mandelbrot(&fractol);
+	mlx_key_hook(win, close_esc, NULL);
     mlx_hook(win, 17, 0, close_window, NULL);
 	mlx_loop(mlx);
 	return (0);

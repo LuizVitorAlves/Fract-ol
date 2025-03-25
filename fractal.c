@@ -10,4 +10,55 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "fractol.h"
 
+int mandelbrot(t_complex c)
+{
+    t_complex z;
+    double temp;
+    int iter;
+
+    z.r = 0;
+    z.i = 0;
+    iter = 0;
+    while (z.r * z.r + z.i * z.i <= 4 && iter < MAX_ITER)
+    {
+        temp = z.r;
+        z.r = z.r * z.r - z.i * z.i + c.r;
+        z.i = 2 * temp * z.i + c.i;
+        iter++;
+    }
+    return (iter);
+}
+
+int colorize(int iter)
+{
+    if (iter == MAX_ITER)
+        return (0x000000);
+    return ((iter * 255 / MAX_ITER) << 16);
+}
+
+void draw_mandelbrot(t_fractol *fractol)
+{
+    int x;
+    int y;
+    t_complex c;
+    int iter;
+    int color;
+
+    y = 0;
+    while (y < HEIGHT)
+    {
+        x = 0;
+        while (x < WIDTH)
+        {
+            c.r = (x - WIDTH / 2.0) * 4.0 / WIDTH;
+            c.i = (y - HEIGHT / 2.0) * 4.0 / HEIGHT;
+            iter = mandelbrot(c);
+            color = colorize(iter);
+            mlx_pixel_put(fractol->mlx, fractol->win, x, y, color); // Desenha o pixel
+            x++;
+        }
+        y++;
+    }
+}
