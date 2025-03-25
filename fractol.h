@@ -16,6 +16,7 @@
 #include "minilibx-linux/mlx.h"
 #include <math.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 # define WIDTH 800
 # define HEIGHT 800
@@ -40,5 +41,11 @@ int close_window(void *param);
 int mandelbrot(t_complex c);
 void draw_mandelbrot(t_fractol *fractol);
 int colorize(int iter);
+int julia(t_complex z, t_complex c);
+void draw_julia(t_fractol *fractol);
+
+//utils
+void	ft_putstr(char *str);
+int	ft_strcmp(char *s1, char *s2);
 
 #endif
