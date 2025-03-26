@@ -21,6 +21,10 @@ static int	init_fractol(t_fractol *fractol)
 	fractol->win = mlx_new_window(fractol->mlx, WIDTH, HEIGHT, "Fract-ol");
 	if (!fractol->win)
 		return (0);
+	fractol->min_x = -2.0;
+	fractol->max_x = 2.0;
+	fractol->min_y = -2.0;
+	fractol->max_y = 2.0;
 	return (1);
 }
 
@@ -28,11 +32,13 @@ static int	check_fractal_type(int argc, char **argv, t_fractol *fractol)
 {
 	if (ft_strcmp(argv[1], "mandelbrot") == 0 && argc == 2)
 	{
+		fractol->type = "mandelbrot";
 		draw_mandelbrot(fractol);
 		return (1);
 	}
 	if (ft_strcmp(argv[1], "julia") == 0 && argc == 4)
 	{
+		fractol->type = "julia";
 		fractol->c.r = atof(argv[2]);
 		fractol->c.i = atof(argv[3]);
 		draw_julia(fractol);
@@ -64,7 +70,8 @@ int	main(int argc, char **argv)
 		ft_putstr("Invalid fractal type. Use mandelbrot or julia.\n");
 		return (1);
 	}
-	mlx_key_hook(fractol.win, close_esc, NULL);
+	mlx_mouse_hook(fractol.win, mouse_zoom, &fractol);
+	mlx_key_hook(fractol.win, close_esc, &fractol);
 	mlx_hook(fractol.win, 17, 0, close_window, NULL);
 	mlx_loop(fractol.mlx);
 	return (0);

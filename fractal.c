@@ -52,16 +52,17 @@ void draw_mandelbrot(t_fractol *fractol)
         x = 0;
         while (x < WIDTH)
         {
-            c.r = (x - WIDTH / 2.0) * 4.0 / WIDTH;
-            c.i = (y - HEIGHT / 2.0) * 4.0 / HEIGHT;
+            c.r = fractol->min_x + (x / (double)WIDTH) * (fractol->max_x - fractol->min_x);
+            c.i = fractol->max_y - (y / (double)HEIGHT) * (fractol->max_y - fractol->min_y);
             iter = mandelbrot(c);
             color = colorize(iter);
-            mlx_pixel_put(fractol->mlx, fractol->win, x, y, color); // Desenha o pixel
+            mlx_pixel_put(fractol->mlx, fractol->win, x, y, color);
             x++;
         }
         y++;
     }
 }
+
 
 int julia(t_complex z, t_complex c)
 {
@@ -92,11 +93,11 @@ void draw_julia(t_fractol *fractol)
         x = 0;
         while (x < WIDTH)
         {
-            z.r = (x - WIDTH / 2.0) * 4.0 / WIDTH;
-            z.i = (y - HEIGHT / 2.0) * 4.0 / HEIGHT;
+            z.r = fractol->min_x + (x / (double)WIDTH) * (fractol->max_x - fractol->min_x);
+            z.i = fractol->max_y - (y / (double)HEIGHT) * (fractol->max_y - fractol->min_y);
             iter = julia(z, fractol->c);
             color = colorize(iter);
-            mlx_pixel_put(fractol->mlx, fractol->win, x, y, color); // Desenhando o pixel
+            mlx_pixel_put(fractol->mlx, fractol->win, x, y, color);
             x++;
         }
         y++;
