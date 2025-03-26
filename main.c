@@ -13,26 +13,6 @@
 #include "minilibx-linux/mlx.h"
 #include "fractol.h"
 
-/*int	main(void)
-{
-	t_fractol	fractol;
-
-	fractol.mlx = mlx_init();
-	if (!fractol.mlx)
-		return (1);
-	fractol.win = mlx_new_window(fractol.mlx, WIDTH, HEIGHT, "Fract-ol");
-	if (!fractol.win)
-		return (1);
-    fractol.c.r = -0.7;
-    fractol.c.i = 0.27015;    
-	draw_julia(&fractol);
-	mlx_key_hook(fractol.win, close_esc, NULL);
-	mlx_hook(fractol.win, 17, 0, close_window, NULL);
-	mlx_loop(fractol.mlx);
-	return (0);
-}
-*/
-
 static int	init_fractol(t_fractol *fractol)
 {
 	fractol->mlx = mlx_init();
@@ -44,14 +24,14 @@ static int	init_fractol(t_fractol *fractol)
 	return (1);
 }
 
-static int	check_fractal_type(char *type, t_fractol *fractol, char **argv)
+static int	check_fractal_type(int argc, char **argv, t_fractol *fractol)
 {
-	if (ft_strcmp(type, "mandelbrot") == 0)
+	if (ft_strcmp(argv[1], "mandelbrot") == 0 && argc == 2)
 	{
 		draw_mandelbrot(fractol);
 		return (1);
 	}
-	else if (ft_strcmp(type, "julia") == 0)
+	if (ft_strcmp(argv[1], "julia") == 0 && argc == 4)
 	{
 		fractol->c.r = atof(argv[2]);
 		fractol->c.i = atof(argv[3]);
@@ -63,21 +43,23 @@ static int	check_fractal_type(char *type, t_fractol *fractol, char **argv)
 
 static void	print_usage(void)
 {
-	ft_putstr("Usage: ./fractol mandelbrot/julia c_r c_i\n");
+	ft_putstr("Usage:\n");
+	ft_putstr("  ./fractol mandelbrot\n");
+	ft_putstr("  ./fractol julia <c_r> <c_i>\n");
 }
 
 int	main(int argc, char **argv)
 {
 	t_fractol	fractol;
 
-	if (argc != 4)
+	if (argc != 2 && argc != 4)
 	{
 		print_usage();
 		return (1);
 	}
 	if (!init_fractol(&fractol))
 		return (1);
-	if (!check_fractal_type(argv[1], &fractol, argv))
+	if (!check_fractal_type(argc, argv, &fractol))
 	{
 		ft_putstr("Invalid fractal type. Use mandelbrot or julia.\n");
 		return (1);
