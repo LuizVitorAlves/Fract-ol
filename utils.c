@@ -33,3 +33,14 @@ int	ft_strcmp(char *s1, char *s2)
 	}
 	return ((unsigned char)*s1 - (unsigned char)*s2);
 }
+
+void my_mlx_pixel_put(t_fractol *fractol, int x, int y, int color)
+{
+    char *dst;
+
+    dst = fractol->draw->addr + (y * fractol->draw->line_length + x * (fractol->draw->bits_per_pixel / 8));
+    *(unsigned int *)dst = color;
+}
+
+
+

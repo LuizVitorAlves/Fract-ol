@@ -13,20 +13,34 @@
 #include "minilibx-linux/mlx.h"
 #include "fractol.h"
 
-static int	init_fractol(t_fractol *fractol)
+static int init_fractol(t_fractol *fractol)
 {
-	fractol->mlx = mlx_init();
-	if (!fractol->mlx)
-		return (0);
-	fractol->win = mlx_new_window(fractol->mlx, WIDTH, HEIGHT, "Fract-ol");
-	if (!fractol->win)
-		return (0);
-	fractol->min_x = -2.0;
-	fractol->max_x = 2.0;
-	fractol->min_y = -2.0;
-	fractol->max_y = 2.0;
-	return (1);
+    t_data *draw;
+
+    fractol->mlx = mlx_init();
+    if (!fractol->mlx)
+        return (0);
+    fractol->win = mlx_new_window(fractol->mlx, WIDTH, HEIGHT, "Fract-ol");
+    if (!fractol->win)
+        return (0);
+    draw = malloc(sizeof(t_data));
+    if (!draw)
+        return (0);
+    draw->img = mlx_new_image(fractol->mlx, WIDTH, HEIGHT);
+    if (!draw->img)
+    {
+        free(draw);
+        return (0);
+    }
+    draw->addr = mlx_get_data_addr(draw->img, &draw->bits_per_pixel, &draw->line_length, &draw->endian);
+    fractol->draw = draw;
+    fractol->min_x = -2.0;
+    fractol->max_x = 2.0;
+    fractol->min_y = -2.0;
+    fractol->max_y = 2.0;
+    return (1);
 }
+
 
 static int	check_fractal_type(int argc, char **argv, t_fractol *fractol)
 {

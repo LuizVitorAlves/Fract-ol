@@ -23,7 +23,7 @@ int mandelbrot(t_complex c)
     iter = 0;
     while (z.r * z.r + z.i * z.i <= 4 && iter < MAX_ITER)
     {
-        temp = z.r;
+        temp = z.r; 
         z.r = z.r * z.r - z.i * z.i + c.r;
         z.i = 2 * temp * z.i + c.i;
         iter++;
@@ -31,11 +31,17 @@ int mandelbrot(t_complex c)
     return (iter);
 }
 
+
 int colorize(int iter)
 {
-    if (iter == MAX_ITER)
-        return (0x000000);
-    return ((iter * 255 / MAX_ITER) << 16);
+    int r, g, b;
+    double t = (double)iter / MAX_ITER;
+    
+    r = (int)(sin(0.08 * iter + t) * 100 + 128);
+    g = (int)(sin(0.16 * iter + 2 + t) * 100 + 128);
+    b = (int)(sin(0.24 * iter + 4 + t) * 100 + 128);
+    
+    return (r << 16 | g << 8 | b);
 }
 
 void draw_mandelbrot(t_fractol *fractol)
@@ -45,10 +51,10 @@ void draw_mandelbrot(t_fractol *fractol)
     t_complex c;
     int iter;
     int color;
-
+    
     y = 0;
     while (y < HEIGHT)
-    {
+    {   
         x = 0;
         while (x < WIDTH)
         {
@@ -62,7 +68,6 @@ void draw_mandelbrot(t_fractol *fractol)
         y++;
     }
 }
-
 
 int julia(t_complex z, t_complex c)
 {
