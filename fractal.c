@@ -31,17 +31,12 @@ int mandelbrot(t_complex c)
     return (iter);
 }
 
-
-int colorize(int iter)
+static void put_pixel_to_image(t_data *data, int x, int y, int color)
 {
-    int r, g, b;
-    double t = (double)iter / MAX_ITER;
+    char *dst;
     
-    r = (int)(sin(0.08 * iter + t) * 100 + 128);
-    g = (int)(sin(0.16 * iter + 2 + t) * 100 + 128);
-    b = (int)(sin(0.24 * iter + 4 + t) * 100 + 128);
-    
-    return (r << 16 | g << 8 | b);
+    dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
+    *(unsigned int *)dst = color;
 }
 
 void draw_mandelbrot(t_fractol *fractol)
@@ -50,7 +45,6 @@ void draw_mandelbrot(t_fractol *fractol)
     int y;
     t_complex c;
     int iter;
-    int color;
     
     y = 0;
     while (y < HEIGHT)
@@ -61,12 +55,12 @@ void draw_mandelbrot(t_fractol *fractol)
             c.r = fractol->min_x + (x / (double)WIDTH) * (fractol->max_x - fractol->min_x);
             c.i = fractol->max_y - (y / (double)HEIGHT) * (fractol->max_y - fractol->min_y);
             iter = mandelbrot(c);
-            color = colorize(iter);
-            mlx_pixel_put(fractol->mlx, fractol->win, x, y, color);
+            put_pixel_to_image(fractol->draw, x, y, colorize(iter));
             x++;
         }
         y++;
     }
+    mlx_put_image_to_window(fractol->mlx, fractol->win, fractol->draw->img, 0, 0);
 }
 
 int julia(t_complex z, t_complex c)
@@ -90,7 +84,6 @@ void draw_julia(t_fractol *fractol)
     int y;
     t_complex z;
     int iter;
-    int color;
 
     y = 0;
     while (y < HEIGHT)
@@ -101,10 +94,10 @@ void draw_julia(t_fractol *fractol)
             z.r = fractol->min_x + (x / (double)WIDTH) * (fractol->max_x - fractol->min_x);
             z.i = fractol->max_y - (y / (double)HEIGHT) * (fractol->max_y - fractol->min_y);
             iter = julia(z, fractol->c);
-            color = colorize(iter);
-            mlx_pixel_put(fractol->mlx, fractol->win, x, y, color);
+            put_pixel_to_image(fractol->draw, x, y, colorize(iter));
             x++;
         }
         y++;
     }
+    mlx_put_image_to_window(fractol->mlx, fractol->win, fractol->draw->img, 0, 0);
 }

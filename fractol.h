@@ -23,7 +23,7 @@
 # define MAX_ITER 1000
 # define ZOOM_IN 4
 # define ZOOM_OUT 5
-# define ZOOM_FACTOR 1.2
+# define ZOOM_FACTOR 1.4
 
 typedef struct s_complex {
     double r;
@@ -60,13 +60,12 @@ int mouse_zoom(int button, int x, int y, t_fractol *fractol);
 //fractal
 int mandelbrot(t_complex c);
 void draw_mandelbrot(t_fractol *fractol);
-int colorize(int iter);
 int julia(t_complex z, t_complex c);
 void draw_julia(t_fractol *fractol);
 
 //utils
 void	ft_putstr(char *str);
 int	ft_strcmp(char *s1, char *s2);
-void my_mlx_pixel_put(t_fractol *fractol, int x, int y, int color);
+int colorize(int iter);
 
 #endif
