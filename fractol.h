@@ -13,10 +13,10 @@
 #ifndef FRACTOL_H
 # define FRACTOL_H
 
-#include "minilibx-linux/mlx.h"
-#include <math.h>
-#include <stdlib.h>
-#include <unistd.h>
+# include "minilibx-linux/mlx.h"
+# include <math.h>
+# include <stdlib.h>
+# include <unistd.h>
 
 # define WIDTH 800
 # define HEIGHT 800
@@ -25,47 +25,48 @@
 # define ZOOM_OUT 5
 # define ZOOM_FACTOR 1.4
 
-typedef struct s_complex {
-    double r;
-    double i;
-} t_complex;
+typedef struct s_complex
+{
+	double		r;
+	double		i;
+}				t_complex;
 
-typedef struct	s_data {
-	void	*img;
-	char	*addr;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
+typedef struct s_data
+{
+	void		*img;
+	char		*addr;
+	int			bits_per_pixel;
+	int			line_length;
+	int			endian;
 }				t_data;
 
-typedef struct s_fractol {
-    void    *mlx;
-    void    *win;
-    t_data    *draw;
-    double  min_x;
-    double  max_x;
-    double  min_y;
-    double  max_y;
-    t_complex    c;
-    char *type;
-} t_fractol;
+typedef struct s_fractol
+{
+	void		*mlx;
+	void		*win;
+	t_data		*draw;
+	double		min_x;
+	double		max_x;
+	double		min_y;
+	double		max_y;
+	t_complex	c;
+	char		*type;
+}				t_fractol;
 
+// events
+int				close_esc(int keycode, void *param);
+int				close_window(void *param);
+int				mouse_zoom(int button, int x, int y, t_fractol *fractol);
 
+// fractal
+int				mandelbrot(t_complex c);
+void			draw_mandelbrot(t_fractol *fractol);
+int				julia(t_complex z, t_complex c);
+void			draw_julia(t_fractol *fractol);
 
-//events
-int close_esc(int keycode, void *param);
-int close_window(void *param);
-int mouse_zoom(int button, int x, int y, t_fractol *fractol);
-
-//fractal
-int mandelbrot(t_complex c);
-void draw_mandelbrot(t_fractol *fractol);
-int julia(t_complex z, t_complex c);
-void draw_julia(t_fractol *fractol);
-
-//utils
-void	ft_putstr(char *str);
-int	ft_strcmp(char *s1, char *s2);
-int colorize(int iter);
+// utils
+void			ft_putstr(char *str);
+int				ft_strcmp(char *s1, char *s2);
+int				colorize(int iter);
 
 #endif

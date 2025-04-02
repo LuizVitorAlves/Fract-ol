@@ -12,21 +12,27 @@
 
 NAME = fractol
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -Ofast
 MLX = minilibx-linux
-MLXFLAGS = -lmlx -L$(MLX) -lXext -lX11 -lm
+MLX_LIB = $(MLX)/libmlx_Linux.a
+MLXFLAGS = -L$(MLX) -lmlx_Linux -L/usr/lib -lXext -lX11 -lm -lz
 SRCS = main.c fractal.c events.c utils.c
 OBJS = $(SRCS:.c=.o)
 
-all: $(NAME)
+all: $(MLX_LIB) $(NAME)
+
+$(MLX_LIB):
+	make -C $(MLX)
 
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(MLXFLAGS)
 
 clean:
 	rm -f $(OBJS)
+	make clean -C $(MLX)
 
 fclean: clean
 	rm -f $(NAME)
+	make clean -C $(MLX)
 
 re: fclean all

@@ -34,14 +34,16 @@ int	ft_strcmp(char *s1, char *s2)
 	return ((unsigned char)*s1 - (unsigned char)*s2);
 }
 
-int colorize(int iter)
+int	colorize(int iter)
 {
-    int r, g, b;
-    double t = (double)iter / MAX_ITER;
-    
-    r = (int)(sin(0.08 * iter + t) * 100 + 128);
-    g = (int)(sin(0.16 * iter + 2 + t) * 100 + 128);
-    b = (int)(sin(0.24 * iter + 4 + t) * 100 + 128);
-    
-    return (r << 16 | g << 8 | b);
+	double	t;
+	int		r;
+	int		g;
+	int		b;
+
+	t = (double)iter / MAX_ITER;
+	r = (int)(sin(0.08 * iter + t) * 100 + 128);
+	g = (int)(sin(0.16 * iter + 2 + t) * 100 + 128);
+	b = (int)(sin(0.24 * iter + 4 + t) * 100 + 128);
+	return ((r << 16) | (g << 8) | b);
 }
